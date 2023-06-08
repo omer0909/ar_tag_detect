@@ -7,7 +7,7 @@
 #include <opencv2/opencv.hpp>
 
 #include "geometry_msgs/msg/pose_stamped.hpp"
-#include "opencv_demo/msg/ar_info.hpp"
+#include "ar_tag_detect_interfaces/msg/ar_info.hpp"
 #include "rclcpp/rclcpp.hpp"
 #include "sensor_msgs/msg/camera_info.hpp"
 #include "sensor_msgs/msg/image.hpp"
@@ -52,7 +52,7 @@ class ImageProcess : public rclcpp::Node {
 		auto cameraInfoEvent = std::bind(&ImageProcess::CameraInfoUpdate, this, std::placeholders::_1);
 		cameraInfo_ = this->create_subscription<sensor_msgs::msg::CameraInfo>("/camera1/camera_info", 10, cameraInfoEvent);
 
-		publisherArTagPose_ = this->create_publisher<opencv_demo::msg::ArInfo>("/ar_tag_pose", 1);
+		publisherArTagPose_ = this->create_publisher<ar_tag_detect_interfaces::msg::ArInfo>("/ar_tag_pose", 1);
 	}
 
    private:
@@ -164,7 +164,7 @@ class ImageProcess : public rclcpp::Node {
 
 			// Draw axis for each marker
 			for (unsigned int i = 0; i < ids.size(); i++) {
-				opencv_demo::msg::ArInfo arTagPose;
+				ar_tag_detect_interfaces::msg::ArInfo arTagPose;
 
 				// std::stringstream out;
 				// out << "rvecs: " << rvecs[i] << std::endl
@@ -224,7 +224,7 @@ class ImageProcess : public rclcpp::Node {
 	cv::Matx33d cameraMatrix_;
 	cv::Mat_<double> distCoeffs_;
 	bool cameraInfoTaked = false;
-	rclcpp::Publisher<opencv_demo::msg::ArInfo>::SharedPtr publisherArTagPose_;
+	rclcpp::Publisher<ar_tag_detect_interfaces::msg::ArInfo>::SharedPtr publisherArTagPose_;
 };
 
 int main(int argc, char* argv[]) {

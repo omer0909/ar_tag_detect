@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.8)
-project(opencv_demo)
+project(ar_tag_detect)
 
 if(CMAKE_COMPILER_IS_GNUCXX OR CMAKE_CXX_COMPILER_ID MATCHES "Clang")
   add_compile_options(-Wall -Wextra -Wpedantic)
@@ -14,19 +14,19 @@ find_package(cv_bridge REQUIRED)
 find_package(image_transport REQUIRED)
 find_package(OpenCV REQUIRED)
 find_package(geometry_msgs REQUIRED)
-find_package(opencv_demo REQUIRED) 
+
+
+find_package(ar_tag_detect_interfaces REQUIRED) 
 
 find_package(tf2 REQUIRED)
 find_package(tf2_ros REQUIRED)
 
-find_package(builtin_interfaces REQUIRED)
-find_package(rosidl_default_generators REQUIRED)
 
 add_executable(image_process_node src/image_process.cpp)
-ament_target_dependencies(image_process_node rclcpp std_msgs sensor_msgs cv_bridge image_transport OpenCV geometry_msgs opencv_demo)
+ament_target_dependencies(image_process_node rclcpp std_msgs sensor_msgs cv_bridge image_transport OpenCV geometry_msgs ar_tag_detect_interfaces)
 
 add_executable(image_process_test_node src/image_process_test.cpp)
-ament_target_dependencies(image_process_test_node rclcpp std_msgs sensor_msgs image_transport geometry_msgs opencv_demo tf2 tf2_ros)
+ament_target_dependencies(image_process_test_node rclcpp std_msgs sensor_msgs image_transport geometry_msgs ar_tag_detect_interfaces tf2 tf2_ros)
 
 
 install(TARGETS
@@ -51,11 +51,5 @@ if(BUILD_TESTING)
   set(ament_cmake_cpplint_FOUND TRUE)
   ament_lint_auto_find_test_dependencies()
 endif()
-
-rosidl_generate_interfaces(${PROJECT_NAME}
-  "msg/ArInfo.msg"
-  DEPENDENCIES builtin_interfaces geometry_msgs std_msgs
-)
-
 
 ament_package()

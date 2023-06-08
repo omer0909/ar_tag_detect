@@ -1,7 +1,7 @@
 #include <memory>
 
 #include "geometry_msgs/msg/transform_stamped.hpp"
-#include "opencv_demo/msg/ar_info.hpp"
+#include "ar_tag_detect_interfaces/msg/ar_info.hpp"
 #include "rclcpp/rclcpp.hpp"
 #include "tf2/LinearMath/Quaternion.h"
 #include "tf2_ros/static_transform_broadcaster.h"
@@ -10,12 +10,12 @@ class ImageProcessTest : public rclcpp::Node {
    public:
 	ImageProcessTest() : Node("image_process_test") {
 		auto event = std::bind(&ImageProcessTest::ArTagEvent, this, std::placeholders::_1);
-		subscriberArTag = this->create_subscription<opencv_demo::msg::ArInfo>("/ar_tag_pose", 10, event);
+		subscriberArTag = this->create_subscription<ar_tag_detect_interfaces::msg::ArInfo>("/ar_tag_pose", 10, event);
 
 		tf_static_broadcaster_ = std::make_shared<tf2_ros::StaticTransformBroadcaster>(this);
 	}
 
-	void ArTagEvent(const opencv_demo::msg::ArInfo::SharedPtr arTag) {
+	void ArTagEvent(const ar_tag_detect_interfaces::msg::ArInfo::SharedPtr arTag) {
 		geometry_msgs::msg::TransformStamped t;
 
 		t.header.stamp = this->get_clock()->now();
@@ -36,7 +36,7 @@ class ImageProcessTest : public rclcpp::Node {
 	void make_transforms() {
 	}
 
-	rclcpp::Subscription<opencv_demo::msg::ArInfo>::SharedPtr subscriberArTag;
+	rclcpp::Subscription<ar_tag_detect_interfaces::msg::ArInfo>::SharedPtr subscriberArTag;
 	std::shared_ptr<tf2_ros::StaticTransformBroadcaster> tf_static_broadcaster_;
 };
 

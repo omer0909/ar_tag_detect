@@ -8,7 +8,7 @@ from launch.actions import SetEnvironmentVariable
 
 def generate_launch_description():
     pkg_share = launch_ros.substitutions.FindPackageShare(
-        package='sam_bot_description').find('sam_bot_description')
+        package='test_area').find('test_area')
     default_model_path = os.path.join(
         pkg_share, 'src/description/sam_bot_description.urdf')
     default_rviz_config_path = os.path.join(pkg_share, 'rviz/urdf_config.rviz')
@@ -51,7 +51,7 @@ def generate_launch_description():
     # ros2 run teleop_twist_keyboard teleop_twist_keyboard
 
     return launch.LaunchDescription([
-        SetEnvironmentVariable(name='GAZEBO_MODEL_PATH', value=[EnvironmentVariable('GAZEBO_MODEL_PATH'), ':' + os.path.join(pkg_share, 'world')]),
+        SetEnvironmentVariable(name='GAZEBO_MODEL_PATH', value=[EnvironmentVariable('GAZEBO_MODEL_PATH', default_value= ''), ':' + os.path.join(pkg_share, 'world')]),
         launch.actions.DeclareLaunchArgument(name='gui', default_value='True',
                                              description='Flag to enable joint_state_publisher_gui'),
         launch.actions.DeclareLaunchArgument(name='model', default_value=default_model_path,
